@@ -4,9 +4,9 @@ COPY pom.xml .
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:23-jdk-alpine
-LABEL authors="diego"
-VOLUME /temp
-COPY target/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+FROM eclipse-temurin:21-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
